@@ -38,8 +38,6 @@ Thumbs.db
 
 # Storage (development)
 storage/
-*.ts
-!*.d.ts
 
 # Kubernetes secrets
 k8s/secrets.yaml
