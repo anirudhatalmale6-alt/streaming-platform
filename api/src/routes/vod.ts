@@ -42,7 +42,7 @@ const upload = multer({
 });
 
 // List VOD files
-router.get('/', async (req: AuthRequest, res: Response) => {
+router.get('/', async (req: AuthRequest, res: Response): Promise<any> => {
   try {
     const { status, page = 1, limit = 20 } = req.query;
     const offset = (Number(page) - 1) * Number(limit);
