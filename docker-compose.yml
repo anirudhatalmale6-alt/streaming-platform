@@ -173,8 +173,11 @@ services:
       REACT_APP_API_URL: ${API_URL:-http://localhost:3000}
       REACT_APP_HLS_URL: ${HLS_URL:-http://localhost:8080}
       REACT_APP_WS_URL: ${WS_URL:-ws://localhost:8188}
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     ports:
       - "80:80"
+      - "443:443"
     networks:
       - streaming-network
     depends_on:
