@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { analyticsApi } from '../services/api';
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
