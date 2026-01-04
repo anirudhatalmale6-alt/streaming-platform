@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: streaming-config
+  namespace: streaming-platform
+data:
+  NODE_ENV: "production"
+  API_URL: "http://api-service:3000"
+  REDIS_URL: "redis://redis-service:6379"
+  POSTGRES_URL: "postgres://streaming:$(POSTGRES_PASSWORD)@postgres-service:5432/streaming_platform"
+  SRS_API_URL: "http://srs-service:1985"
+  SRS_RTMP_URL: "rtmp://srs-service:1935/linear"
+  JANUS_API_URL: "http://janus-service:8088/janus"
+  HLS_URL: "http://srs-service:8080"
+  DASHBOARD_URL: "http://dashboard-service"

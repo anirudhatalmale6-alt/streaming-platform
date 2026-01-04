@@ -1,0 +1,126 @@
+---
+# Transcoder Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transcoder
+  namespace: streaming-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: transcoder
+  template:
+    metadata:
+      labels:
+        app: transcoder
+    spec:
+      containers:
+        - name: transcoder
+          image: streaming-platform/transcoder:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: streaming-config
+            - secretRef:
+                name: streaming-secrets
+          volumeMounts:
+            - name: storage
+              mountPath: /storage
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "1000m"
+            limits:
+              memory: "4Gi"
+              cpu: "4000m"
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: storage-pvc
+---
+# Restream Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restream
+  namespace: streaming-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: restream
+  template:
+    metadata:
+      labels:
+        app: restream
+    spec:
+      containers:
+        - name: restream
+          image: streaming-platform/restream:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: streaming-config
+            - secretRef:
+                name: streaming-secrets
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "2000m"
+---
+# Playout Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: playout
+  namespace: streaming-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: playout
+  template:
+    metadata:
+      labels:
+        app: playout
+    spec:
+      containers:
+        - name: playout
+          image: streaming-platform/playout:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: streaming-config
+            - secretRef:
+                name: streaming-secrets
+          volumeMounts:
+            - name: storage
+              mountPath: /storage
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "2000m"
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: storage-pvc
+---
+# Storage PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: storage-pvc
+  namespace: streaming-platform
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
