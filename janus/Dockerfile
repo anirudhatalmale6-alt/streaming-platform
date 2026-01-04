@@ -26,6 +26,10 @@ RUN apt-get update && apt-get install -y \
     libsrtp2-dev \
     libwebsockets-dev \
     libusrsctp-dev \
+    libavutil-dev \
+    libavcodec-dev \
+    libavformat-dev \
+    zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Build and install libnice (newer version)
